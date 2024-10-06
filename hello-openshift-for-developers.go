@@ -5,7 +5,8 @@ import (
 	"net/http"
 	"html/template"
 	"os"
-        "embed"
+	"runtime"
+	"embed"
 )
 
 //go:embed static/*
@@ -16,6 +17,9 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 	if len(response) == 0 {
 		response = "I love Application Platforms!"
 	}
+
+	// Get CPU architecture
+	arch := runtime.GOARCH
 
 	tmpl := `
 	<!DOCTYPE html>
@@ -35,6 +39,7 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 		<div class="container">
 			<img src="https://raw.githubusercontent.com/andyrepton/hello/main/static/openshift.jpg" alt="OpenShift" style="max-width: 100%; max-height: 50%;">
 			<h1>{{.Response}}</h1>
+			<p>CPU Architecture: {{.Arch}}</p>
 		</div>
 	</body>
 	</html>
@@ -48,8 +53,10 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 
 	data := struct {
 		Response string
+		Arch     string
 	}{
 		Response: response,
+		Arch:     arch,
 	}
 
 	err = t.Execute(w, data)
@@ -77,4 +84,3 @@ func main() {
 
 	select {}
 }
-
