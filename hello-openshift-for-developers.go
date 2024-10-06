@@ -32,6 +32,16 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 				align-items: center;
 				justify-content: center;
 				height: 100vh;
+				text-align: center;
+			}
+			h1 {
+				font-size: 2em;
+			}
+			.arch {
+				font-size: 1.5em; /* Larger font size for CPU architecture */
+				color: #2c3e50; /* A contrasting color */
+				margin-top: 20px; /* Space above the architecture text */
+				font-weight: bold; /* Make the text bold */
 			}
 		</style>
 	</head>
@@ -39,7 +49,7 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 		<div class="container">
 			<img src="https://raw.githubusercontent.com/andyrepton/hello/main/static/openshift.jpg" alt="OpenShift" style="max-width: 100%; max-height: 50%;">
 			<h1>{{.Response}}</h1>
-			<p>CPU Architecture: {{.Arch}}</p>
+			<p class="arch">CPU Architecture: {{.Arch}}</p>
 		</div>
 	</body>
 	</html>
@@ -84,3 +94,4 @@ func main() {
 
 	select {}
 }
+
