@@ -34,11 +34,12 @@ env:
   ARO_TOKEN: ${{ secrets.ARO_TOKEN }}
   GCP_SERVER: ${{ secrets.GCP_SERVER }}
   GCP_TOKEN: ${{ secrets.GCP_TOKEN }}
-  OCP_SERVER: ${{ secrets.ROSA_SERVER_PROD }}
-  OCP_TOKEN: ${{ secrets.ROSA_TOKEN_PROD }}
+  OCP_SERVER: ${{ secrets.OCP_SERVER }}
+  OCP_TOKEN: ${{ secrets.OCP_TOKEN }}
   ARO_LIVE: ${{ vars.ARO_LIVE }}
   GCP_LIVE: ${{ vars.GCP_LIVE }}
   ROSA_LIVE: ${{ vars.ROSA_LIVE }}
+  ONPREM_LIVE: ${{ vars.ONPREM_LIVE }}
   # 🖊️ EDIT to set the kube context's namespace after login. Leave blank to use your user's default namespace.
   OPENSHIFT_NAMESPACE: ""
 
