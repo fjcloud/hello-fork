@@ -93,22 +93,13 @@ jobs:
         echo "IMAGE_TAGS=latest ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
 
     # https://github.com/redhat-actions/buildah-build#readme
-    - name: Build from Dockerfile
-      id: build_image_msvc
-      uses: redhat-actions/s2i-build@v2
-      with:
-        path_context: 'microservice'
-        builder_image: 'registry.access.redhat.com/ubi8/nodejs-16'
-        image: 'gmidha/ostoy-microservice'
-    
-        #Setup S2i and Build Frontend container image
-    - name: Steup and Build
-      id: build_image_frontend
+    - name: Build
+      id: build_image
       uses: redhat-actions/s2i-build@v2
       with:
         path_context: './'
-        builder_image: 'registry.access.redhat.com/ubi8/nodejs-16'
-        image: 'gmidha/ostoy'
+        builder_image: 'registry.access.redhat.com/ubi9/golang'
+        image: 'andyrepton/hello'
     
 
     # https://github.com/redhat-actions/push-to-registry#readme
@@ -116,18 +107,8 @@ jobs:
       id: push-image
       uses: redhat-actions/push-to-registry@v2
       with:
-        image: ${{ steps.build_image_msvc.outputs.image }}
-        tags: ${{ steps.build_image_msvc.outputs.tags }}
-        registry: ${{ env.IMAGE_REGISTRY }}
-        username: ${{ env.IMAGE_REGISTRY_USER }}
-        password: ${{ env.IMAGE_REGISTRY_PASSWORD }}
-
-    - name: Push Frontend image to Quay
-      id: push-image-frontend
-      uses: redhat-actions/push-to-registry@v2
-      with:
-        image: ${{ steps.build_image_frontend.outputs.image }}
-        tags: ${{ steps.build_image_frontend.outputs.tags }}
+        image: ${{ steps.build_image.outputs.image }}
+        tags: ${{ steps.build_image.outputs.tags }}
         registry: ${{ env.IMAGE_REGISTRY }}
         username: ${{ env.IMAGE_REGISTRY_USER }}
         password: ${{ env.IMAGE_REGISTRY_PASSWORD }}
