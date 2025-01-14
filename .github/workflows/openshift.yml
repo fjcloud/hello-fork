@@ -98,7 +98,7 @@ jobs:
       uses: redhat-actions/s2i-build@v2
       with:
         path_context: './'
-        builder_image: 'registry.access.redhat.com/ubi9/golang'
+        builder_image: 'registry.access.redhat.com/ubi9/go-toolset'
         image: 'andyrepton/hello'
     
 
