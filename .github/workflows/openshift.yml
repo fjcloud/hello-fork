@@ -52,7 +52,6 @@ env:
 
   # 🖊️ EDIT to change the image registry settings.
   # Registries such as GHCR, Quay.io, and Docker Hub are supported.
-  IMAGE_REGISTRY: "quay.io"
   IMAGE_REGISTRY_USER: "andyrepton"
   IMAGE_REGISTRY_PASSWORD: ${{ secrets.QUAY_TOKEN }}
 
@@ -69,35 +68,23 @@ on:
 jobs:
   image-ci-cd:
     name: Build and push to quay
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     environment: build
 
     outputs:
       ROUTE: ${{ steps.deploy-and-expose.outputs.route }}
       SELECTOR: ${{ steps.deploy-and-expose.outputs.selector }}
-      MSVC_IMAGE: ${{ steps.push-image.outputs.registry-path }}
-      FEND_IMAGE: ${{ steps.push-image-frontend.outputs.registry-path }}
     
     steps:
     - name: Check out repository
       uses: actions/checkout@v3
     
-    - name: Determine app name
-      if: env.APP_NAME == ''
-      run: |
-        echo "APP_NAME=$(basename $PWD)" | tee -a $GITHUB_ENV
-
-    - name: Determine image tags
-      if: env.IMAGE_TAGS == ''
-      run: |
-        echo "IMAGE_TAGS=latest ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
-
     # https://github.com/redhat-actions/buildah-build#readme
     - name: Build
       id: build_image
       uses: redhat-actions/s2i-build@v2
       with:
-        path_context: './'
+        path_context: '.'
         builder_image: 'registry.access.redhat.com/ubi9/go-toolset'
         image: 'andyrepton/hello'
     
@@ -109,16 +96,14 @@ jobs:
       with:
         image: ${{ steps.build_image.outputs.image }}
         tags: ${{ steps.build_image.outputs.tags }}
-        registry: ${{ env.IMAGE_REGISTRY }}
+        registry: quay.io/${{ env.IMAGE_REGISTRY_USER }}
         username: ${{ env.IMAGE_REGISTRY_USER }}
         password: ${{ env.IMAGE_REGISTRY_PASSWORD }}
 
     # The path the image was pushed to is now stored in ${{ steps.push-image.outputs.registry-path }}
 
-    
-    
   rosa-deploy:
-    name: ROSA Deployment - Dev
+    name: ROSA Deployment
     if: ${{ vars.ROSA_LIVE == 'true' }}
     runs-on: ubuntu-22.04
     needs: image-ci-cd
