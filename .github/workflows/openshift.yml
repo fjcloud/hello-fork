@@ -165,4 +165,4 @@ jobs:
       run: |
         oc new-app golang~https://github.com/andyrepton/hello --env=CLOUD_REGION=germany --env=OPENSHIFT_TYPE=OCP --env=CLOUD_TYPE=On-Prem
         oc expose deploy hello --port 8080
-        oc expose service/hello
+        oc create route edge hello --service=hello --insecure-policy=Redirect
