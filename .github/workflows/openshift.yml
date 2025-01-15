@@ -168,7 +168,7 @@ jobs:
         app_name: ${{ env.APP_NAME }}
         image: "quay.io/andyrepton/hello:latest"
         namespace: ${{ env.OPENSHIFT_NAMESPACE }}
-        port: ${{ env.APP_PORT }}
+        port: "8080"
         build_env: |
           CLOUD_REGION=Germany
           OPENSHIFT_TYPE=OCP
