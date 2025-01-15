@@ -75,6 +75,7 @@ jobs:
     outputs:
       ROUTE: ${{ steps.deploy-and-expose.outputs.route }}
       SELECTOR: ${{ steps.deploy-and-expose.outputs.selector }}
+      IMAGE: ${{ steps.push-image.outputs.registry-path }}
     
     steps:
     - name: Check out repository
@@ -165,7 +166,7 @@ jobs:
       uses: redhat-actions/oc-new-app@v1
       with:
         app_name: ${{ env.APP_NAME }}
-        image: ${{ needs.image-ci-cd.outputs.image }}
+        image: ${{ needs.image-ci-cd.outputs.IMAGE }}
         namespace: ${{ env.OPENSHIFT_NAMESPACE }}
         port: ${{ env.APP_PORT }}
         build_env: |
