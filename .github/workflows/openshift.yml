@@ -166,7 +166,7 @@ jobs:
       uses: redhat-actions/oc-new-app@v1
       with:
         app_name: ${{ env.APP_NAME }}
-        image: ${{ needs.image-ci-cd.outputs.IMAGE }}
+        image: "quay.io/andyrepton/hello:latest"
         namespace: ${{ env.OPENSHIFT_NAMESPACE }}
         port: ${{ env.APP_PORT }}
         build_env: |
