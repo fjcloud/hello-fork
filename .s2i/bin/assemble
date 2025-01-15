@@ -1,0 +1,8 @@
+#!/bin/bash
+# .s2i/bin/assemble
+
+# Read port from environment or use default
+PORT="${PORT:-8080}"
+
+# Add EXPOSE instruction
+echo "EXPOSE ${PORT}" >> ${DOCKERFILE_PATH}
